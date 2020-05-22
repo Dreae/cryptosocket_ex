@@ -1,0 +1,8 @@
+{
+    "name": "CryptoSocket-EX",
+    "dockerFile": "Dockerfile",
+    "remoteUser": "dev",
+    "extensions": [
+        "jakebecker.elixir-ls"
+    ]
+}
