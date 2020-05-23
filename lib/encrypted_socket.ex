@@ -2,7 +2,7 @@ defmodule CryptosocketEx.EncryptedSocket do
   @type child_state :: term
 
   @callback init() :: child_state
-  @callback handle_data(bitstring, child_state) :: :ok | {:error, child_state}
+  @callback handle_data(bitstring, child_state) :: {:ok, child_state} | {:error, child_state}
   @callback get_key(String.t, child_state) :: {:ok, String.t, child_state} | {:error, term, child_state}
 
   defmacro __using__(_opts) do
