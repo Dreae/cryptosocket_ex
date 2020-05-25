@@ -32,7 +32,7 @@ defmodule CryptosocketEx.EncryptedSocket do
         <<key_id::binary-size(pos), 0, mac::binary>> = rest
 
         {:ok, key, child_state} = get_key(key_id, child_state)
-        derived_key = :crypto.hash(:sha512, key)
+        derived_key = :crypto.hash(:blake2b, key)
 
         computed_mac = :crypto.mac(:hmac, :sha512, :binary.part(derived_key, {0, 32}), client_pk <> key_id <> <<0>>)
         computed_mac = :binary.part(computed_mac, {0, 32})
@@ -43,7 +43,7 @@ defmodule CryptosocketEx.EncryptedSocket do
         else
           {public_key, private_key} = :crypto.generate_key(:ecdh, :x25519)
           scalar_mult_key = :crypto.compute_key(:ecdh, client_pk, private_key, :x25519)
-          session_key = :crypto.hash(:sha512, scalar_mult_key <> client_pk <> public_key)
+          session_key = :crypto.hash(:blake2b, scalar_mult_key <> client_pk <> public_key)
 
           packet = public_key <> key_id <> <<0>>
           signature = :crypto.mac(:hmac, :sha512, :binary.part(derived_key, {0, 32}), packet)
